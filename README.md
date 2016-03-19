@@ -22,11 +22,17 @@ or PostgreSQL
 
 Make a note of the username, password, and host name as you will need to use these to login to the database.
 
-Add this upstream Redmine quickstart repo
+Copy this upstream Redmine quickstart data
 
 	cd redmine
-	git remote add upstream -m master git://github.com/skarllot/openshift-redmine-quickstart.git
-	git pull -s recursive -X theirs upstream master
+	rm -rf ./* .openshift/
+	wget https://github.com/skarllot/openshift-redmine-quickstart/archive/master.tar.gz
+	tar xzf master.tar.gz
+	rm -f master.tar.gz
+	mv openshift-redmine-quickstart-master/* openshift-redmine-quickstart-master/.* ./ &>/dev/null
+	rmdir openshift-redmine-quickstart-master/
+	git add .
+	git commit -m 'openshift-redmine-quickstart'
 
 Then push the repo upstream
 
