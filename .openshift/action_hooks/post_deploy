@@ -40,10 +40,21 @@ echo ------------------------
 echo Selected DBMS: $DBMS_NAME
 echo ------------------------
 
-pushd ${OPENSHIFT_REPO_DIR} > /dev/null
-echo "Migrating database"
-bundle exec "env RAILS_ENV='production' rake db:migrate"
-popd > /dev/null
+if db_list_tables | grep attachments > /dev/null
+then
+    # Runs on every other Redmine application deployment
+    # except the first one.
+    pushd ${OPENSHIFT_REPO_DIR} > /dev/null
+    echo "Migrating database"
+    bundle exec "env RAILS_ENV='production' rake db:migrate"
+    popd > /dev/null
+else
+    pushd ${OPENSHIFT_REPO_DIR}/db > /dev/null
+    echo "Creating database and loading default data"
+    bundle exec "env RAILS_ENV='production' rake db:migrate"
+    bundle exec "env RAILS_ENV='production' rake redmine:load_default_data"
+    popd > /dev/null
+fi
 
 
 pushd ${OPENSHIFT_REPO_DIR} > /dev/null

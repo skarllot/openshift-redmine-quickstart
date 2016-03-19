@@ -35,3 +35,4 @@ else
 fi
 
 gem install bundler -v '1.5.0'
+gem install rack -v '1.6.4'
