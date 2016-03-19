@@ -14,13 +14,23 @@ Create an account at https://www.openshift.com
 
 Create a ruby application with either MySQL
 
-	rhc app create redmine ruby-2.0 mysql-5.5 --from-code=https://github.com/skarllot/openshift-redmine-quickstart.git
+	rhc app create redmine ruby-2.0 mysql-5.5
 
 or PostgreSQL
 
-	rhc app create redmine ruby-2.0 postgresql-9.2 --from-code=https://github.com/skarllot/openshift-redmine-quickstart.git
+	rhc app create redmine ruby-2.0 postgresql-9.2
 
 Make a note of the username, password, and host name as you will need to use these to login to the database.
+
+Add this upstream Redmine quickstart repo
+
+	cd redmine
+	git remote add upstream -m master git://github.com/skarllot/openshift-redmine-quickstart.git
+	git pull -s recursive -X theirs upstream master
+
+Then push the repo upstream
+
+	git push origin master
 
 That's it, you can now checkout your application at:
 
