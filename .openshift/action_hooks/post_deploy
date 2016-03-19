@@ -40,30 +40,11 @@ echo ------------------------
 echo Selected DBMS: $DBMS_NAME
 echo ------------------------
 
-# Determinate wheather it is or it isn't the initial deployment,
-# so the database will be created from redmine.sql or there are
-# changes which need to be migrated.
+pushd ${OPENSHIFT_REPO_DIR} > /dev/null
+echo "Migrating database"
+bundle exec "env RAILS_ENV='production' rake db:migrate"
+popd > /dev/null
 
-if db_list_tables | grep attachments > /dev/null
-then
-    # Runs on every other Redmine application deployment
-    # except the first one.
-    pushd ${OPENSHIFT_REPO_DIR} > /dev/null
-    echo "Migrating database"
-    bundle exec "env RAILS_ENV='production' rake db:migrate"
-    popd > /dev/null
-else
-    # Runs on the initial Redmine deployment
-    ###
-    # If the quickstart is updated for newer version
-    # redmine.sql needs to be updated too.
-
-    pushd ${OPENSHIFT_REPO_DIR}/db > /dev/null
-    echo "Loading database"
-    gunzip -c redmine-${DBMS_NAME}.sql.gz | db_call
-    rm redmine-${DBMS_NAME}.sql.gz
-    popd > /dev/null
-fi
 
 pushd ${OPENSHIFT_REPO_DIR} > /dev/null
     echo "Generating secret token"
