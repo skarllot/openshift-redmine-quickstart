@@ -22,21 +22,10 @@ or PostgreSQL
 
 Make a note of the username, password, and host name as you will need to use these to login to the database.
 
-Copy this upstream Redmine quickstart data
+Copy this upstream Redmine quickstart data and push it
 
 	cd redmine
-	rm -rf ./* .openshift/
-	wget https://github.com/skarllot/openshift-redmine-quickstart/archive/master.tar.gz
-	tar xzf master.tar.gz
-	rm -f master.tar.gz
-	mv openshift-redmine-quickstart-master/* openshift-redmine-quickstart-master/.* ./ &>/dev/null
-	rmdir openshift-redmine-quickstart-master/
-	git add .
-	git commit -m 'openshift-redmine-quickstart'
-
-Then push the repo upstream
-
-	git push origin master
+	wget -O- https://github.com/skarllot/openshift-redmine-quickstart/raw/master/script/deploy.sh | bash
 
 That's it, you can now checkout your application at:
 
