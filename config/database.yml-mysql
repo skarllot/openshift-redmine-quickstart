@@ -3,12 +3,12 @@
 # Line indentation must be 2 spaces (no tabs).
 
 production:
-  adapter:  <%= ENV['OPENSHIFT_MYSQL_DB_HOST'] ? 'mysql2' : 'postgresql' %>
+  adapter:  mysql2
   database: <%= ENV['OPENSHIFT_APP_NAME'] %>
-  host:     <%= ENV['OPENSHIFT_MYSQL_DB_HOST'] or ENV['OPENSHIFT_POSTGRESQL_DB_HOST'] %>
-  username: <%= ENV['OPENSHIFT_MYSQL_DB_USERNAME'] or ENV['OPENSHIFT_POSTGRESQL_DB_USERNAME']  %>
-  password: <%= ENV['OPENSHIFT_MYSQL_DB_PASSWORD'] or ENV['OPENSHIFT_POSTGRESQL_DB_PASSWORD']%>
-  port:     <%= ENV['OPENSHIFT_MYSQL_DB_PORT'] or  ENV['OPENSHIFT_POSTGRESQL_DB_PORT'] %>
+  host:     <%= ENV['OPENSHIFT_MYSQL_DB_HOST'] %>
+  username: <%= ENV['OPENSHIFT_MYSQL_DB_USERNAME']  %>
+  password: <%= ENV['OPENSHIFT_MYSQL_DB_PASSWORD'] %>
+  port:     <%= ENV['OPENSHIFT_MYSQL_DB_PORT'] %>
   encoding: utf8
 
 development:

@@ -4,13 +4,34 @@
 # before the build step.  This script gets executed directly, so it
 # could be python, php, ruby, etc.
 
-#
-#  main(): Add a Gemfile.lock from the specific version and replace the env
-#          variables for DB HOST, USERNAME and PASSWORD.
-# 
-pushd "$OPENSHIFT_REPO_DIR" > /dev/null
-[ ! -f Gemfile.lock ] && cp -f "Gemfile.lock.ruby-$OPENSHIFT_RUBY_VERSION" Gemfile.lock
-cp config/database.yml-$OPENSHIFT_RUBY_VERSION config/database.yml
-popd > /dev/null
+if [ "${OPENSHIFT_RUBY_VERSION}" != "2.0" ]; then
+    echo 1>&2
+    echo "Unsupported ruby version. Please run:" 1>&2
+    echo "rhc cartridge add -a $OPENSHIFT_APP_NAME -c ruby-2.0" 1>&2
+    echo "then make a sample commit (add whitespace somewhere) and re-push" 1>&2
+    echo 1>&2
+    exit 5
+fi
+
+if [ ${OPENSHIFT_MYSQL_DB_HOST} ]; then
+    pushd "$OPENSHIFT_REPO_DIR" > /dev/null
+    [ ! -f Gemfile.lock ] && cp -f "Gemfile.lock.mysql" Gemfile.lock
+    cp config/database.yml-mysql config/database.yml
+    popd > /dev/null
+elif [ ${OPENSHIFT_POSTGRESQL_DB_HOST} ]; then
+    pushd "$OPENSHIFT_REPO_DIR" > /dev/null
+    [ ! -f Gemfile.lock ] && cp -f "Gemfile.lock.pg" Gemfile.lock
+    cp config/database.yml-pg config/database.yml
+    popd > /dev/null
+else
+    echo 1>&2
+    echo "Could not find a database. Please run:" 1>&2
+    echo "rhc cartridge add -a $OPENSHIFT_APP_NAME -c mysql-5.1" 1>&2
+    echo "or:"
+    echo "rhc cartridge add -a $OPENSHIFT_APP_NAME -c postgresql-9.2" 1>&2
+    echo "then make a sample commit (add whitespace somewhere) and re-push" 1>&2
+    echo 1>&2
+    exit 5
+fi
 
 gem install bundler -v '1.5.0'
