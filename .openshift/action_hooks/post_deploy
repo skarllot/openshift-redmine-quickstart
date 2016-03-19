@@ -62,6 +62,7 @@ pushd ${OPENSHIFT_REPO_DIR} > /dev/null
     bundle exec "env RAILS_ENV='production' rake generate_secret_token"
 popd > /dev/null
 
+echo "Linking files directory to data directory"
 if [ ! -d ${OPENSHIFT_DATA_DIR}files ]
 then
 	mkdir ${OPENSHIFT_DATA_DIR}files
