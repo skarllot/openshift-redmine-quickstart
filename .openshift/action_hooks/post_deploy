@@ -52,7 +52,7 @@ else
     pushd ${OPENSHIFT_REPO_DIR}/db > /dev/null
     echo "Creating database and loading default data"
     bundle exec "env RAILS_ENV='production' rake db:migrate"
-    bundle exec "env RAILS_ENV='production' rake redmine:load_default_data"
+    echo "en" | bundle exec "env RAILS_ENV='production' rake redmine:load_default_data"
     popd > /dev/null
 fi
 
