@@ -62,10 +62,21 @@ pushd ${OPENSHIFT_REPO_DIR} > /dev/null
     bundle exec "env RAILS_ENV='production' rake generate_secret_token"
 popd > /dev/null
 
-echo "Linking files directory to data directory"
+echo "Linking writeable directories to data directory"
 if [ ! -d ${OPENSHIFT_DATA_DIR}files ]
 then
 	mkdir ${OPENSHIFT_DATA_DIR}files
+	mkdir ${OPENSHIFT_DATA_DIR}log
+	mkdir ${OPENSHIFT_DATA_DIR}tmp
+	mkdir ${OPENSHIFT_DATA_DIR}plugin_assets
 fi
 
+mv ${OPENSHIFT_REPO_DIR}tmp/* ${OPENSHIFT_DATA_DIR}/tmp/
+rm -rf ${OPENSHIFT_REPO_DIR}files
+rm -rf ${OPENSHIFT_REPO_DIR}log
+rm -rf ${OPENSHIFT_REPO_DIR}tmp
+rm -rf ${OPENSHIFT_REPO_DIR}public/plugin_assets
 ln -sf ${OPENSHIFT_DATA_DIR}files ${OPENSHIFT_REPO_DIR}files
+ln -sf ${OPENSHIFT_DATA_DIR}log ${OPENSHIFT_REPO_DIR}log
+ln -sf ${OPENSHIFT_DATA_DIR}tmp ${OPENSHIFT_REPO_DIR}tmp
+ln -sf ${OPENSHIFT_DATA_DIR}plugin_assets ${OPENSHIFT_REPO_DIR}public/plugin_assets
